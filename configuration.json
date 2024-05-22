@@ -1,7 +1,7 @@
 {
     "tables": [
-        {
-            "tableName": "team",
+      {  "team" : {
+           
             "columns": {
                 "Team_ID": {
                     "type": "integer"
@@ -10,17 +10,6 @@
                     "type": "string"
                 }
             }
-        },
-        {
-            "tableName": "company",
-            "columns": {
-                "Comp_ID": {
-                    "type": "integer"
-                },
-                "Emp_ID": {
-                    "type": "integer"
-                }
-            }
-        }
+        }}
     ]
 }
