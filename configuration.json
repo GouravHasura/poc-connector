@@ -1,13 +1,24 @@
 {
     "tables": [
         {
-            "tableName": "Users",
+            "tableName": "team",
             "columns": {
-                "userId": {
+                "Team_ID": {
                     "type": "integer"
                 },
-                "username": {
+                "Team_Name": {
                     "type": "string"
+                }
+            }
+        },
+        {
+            "tableName": "company",
+            "columns": {
+                "Comp_ID": {
+                    "type": "integer"
+                },
+                "Emp_ID": {
+                    "type": "integer"
                 }
             }
         }
