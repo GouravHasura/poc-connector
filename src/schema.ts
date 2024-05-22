@@ -1,71 +1,22 @@
-import { Configuration } from "./configuration";
 import { readFile } from 'fs/promises';
-import { resolve } from 'path';
+import { resolve, join, basename } from 'path';
+import * as fs from 'fs/promises';
 import {
-
     CollectionInfo,
     ObjectField,
     ObjectType,
     ScalarType,
-    SchemaResponse,
-    start
+    SchemaResponse
 } from "@hasura/ndc-sdk-typescript";
 
-// export async function getSchema(configuration: Configuration): Promise<SchemaResponse> {
-//     const scalarTypes: { [k: string]: ScalarType } = {
-//         'integer': {
-//             aggregate_functions: {},
-//             comparison_operators: {
-//                 'eq': { type: 'equal' }
-//             }
-//         },
-//         'string': {
-//             aggregate_functions: {},
-//             comparison_operators: {
-//                 'eq': { type: 'equal' },
-//                 'like': { type: 'custom', argument_type: { type: 'named', name: 'string' } }
-//             }
-//         }
-//     };
+type Configuration = {
+    tables: TableConfiguration[];
+};
 
-//     const objectTypes: { [k: string]: ObjectType } = {};
-//     const collections: CollectionInfo[] = [];
-//     configuration.tables.forEach(table => {
-//         const tableName = table.tableName;
-//         const fields: { [k: string]: ObjectField } = {
-//             userId: { type: { type: "named", name: "integer" } },
-//             username: { type: { type: "named", name: "string" } },
-//             email: { type: { type: "named", name: "string" } },
-//             encPassword: { type: { type: "named", name: "string" } },
-//             team: { type: { type: "named", name: "integer" } },
-//             empManager: { type: { type: "named", name: "integer" } }
-//         };
-
-//         // Add object type for the table
-//         objectTypes[tableName] = { fields };
-
-//         // Add collection info for the table
-//         collections.push({
-//             name: tableName,
-//             arguments: {},
-//             type: tableName,
-//             uniqueness_constraints: {},
-//             foreign_keys: {}
-//         });
-//     });
-//     console.log(collections)
-//     const functions: any[] = [];
-//     const procedures: any[] = [];
-
-//     return {
-//         scalar_types: scalarTypes,
-//         object_types: objectTypes,
-//         collections: collections,
-//         functions: functions,
-//         procedures: procedures
-//     };
-// }
-
+type TableConfiguration = {
+    tableName: string;
+    filePath: string;
+};
 
 async function getTableColumns(filePath: string): Promise<string[]> {
     const csvData = await readFile(filePath, 'utf-8');
@@ -93,10 +44,15 @@ export async function getSchema(configuration: Configuration): Promise<SchemaRes
 
     const objectTypes: { [k: string]: ObjectType } = {};
     const collections: CollectionInfo[] = [];
+    const dataFolder = 'src/data';
 
-    for (const table of configuration.tables) {
-        const tableName = table.tableName;
-        const filePath = resolve(table.filePath);
+    // Read all files in the data folder
+    const files = await fs.readdir(dataFolder);
+    const csvFiles = files.filter((file: any) => file.endsWith('.csv'));
+
+    for (const csvFile of csvFiles) {
+        const tableName = basename(csvFile, '.csv');
+        const filePath = join(dataFolder, csvFile);
         const columns = await getTableColumns(filePath);
 
         const fields: { [k: string]: ObjectField } = {};
@@ -104,10 +60,8 @@ export async function getSchema(configuration: Configuration): Promise<SchemaRes
             fields[column] = { type: { type: 'named', name: 'string' } }; // Defaulting to string type
         }
 
-        // Add object type for the table
         objectTypes[tableName] = { fields };
 
-        // Add collection info for the table
         collections.push({
             name: tableName,
             arguments: {},
@@ -116,7 +70,7 @@ export async function getSchema(configuration: Configuration): Promise<SchemaRes
             foreign_keys: {}
         });
     }
-    console.log(collections)
+
     const functions: any[] = [];
     const procedures: any[] = [];
 

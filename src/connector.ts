@@ -3,6 +3,7 @@ import { resolve } from 'path';
 import { getSchema } from "./schema";
 import { Configuration } from "./configuration";
 import { tryInitState } from "./state";
+import { query } from './query';
 import {
     BadGateway,
     BadRequest,
@@ -96,52 +97,3 @@ async function mutation(configuration: Configuration, state: State, request: Mut
     throw new Error("Function not implemented.");
 }
 
-async function query(configuration: Configuration, state: State, request: QueryRequest): Promise<QueryResponse> {
-    try {
-        // console.log(request)
-        // const table = request.collection;
-        // const { data } = state;
-
-        // const tableIndex = configuration.tables.findIndex(t => t.tableName === table);
-        // // console.log('data',data)
-        // // if (tableIndex === -1) {
-        // //     // Table not found
-        // //     return {
-        // //         error: `Table '${table}' not found in the configuration`
-        // //     };
-        // // }
-
-        // let fields: any = [];
-        // if (request.query.fields) {
-        //     fields = Object.keys(request.query.fields);
-        // }
-
-        
-        // const tableData = data;
-        // const responseData = tableData;
-        
-        // const limit = request.query.limit || responseData.length;
-        // const limitedData = responseData.slice(0, limit);
-
-
-        // const rowSets = {
-        //     rows: limitedData.map(row => {
-        //       const modifiedRow: {[key: string]: string | null} = {}; 
-        //       Object.keys(row).forEach((key:any) => {
-        //         modifiedRow[key] = row[key] === 'NULL' ? null : row[key]; 
-        //       });
-        //       return modifiedRow;
-        //     })
-        //   };
-         
-        // return [rowSets] ;
-       // console.log('request',request)
-         throw new Error("Internal serversasas error");
-
-    } catch (error) {
-        console.error('Query error:', error);
-        // Throw the error instead of returning an error object
-        throw new Error("Internal serversasas error");
-    }
-
-}
