@@ -1,0 +1,5 @@
+userId,username,email,encPassword,team,empManager
+1,gouravk,gourav.k@hasura.io,ashjkljaklsjdasd,1,2
+2,rajus,raju.s@hasura.io,addsfasdfasdasd,1,3
+3,rishid,rishi.d@hasura.io,askl;dkals;dj,1,4
+4,tanmaig,tanmai.g@hasura.io,jakl;seiqwopei,2,NULL

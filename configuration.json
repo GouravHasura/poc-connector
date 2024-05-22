@@ -1,0 +1,15 @@
+{
+    "tables": [
+        {
+            "tableName": "Users",
+            "columns": {
+                "userId": {
+                    "type": "integer"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        }
+    ]
+}
